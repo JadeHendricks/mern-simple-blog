@@ -3,6 +3,12 @@ const dotenv = require('dotenv');
 dotenv.config();
 const jwt = require('jsonwebtoken');
 
+const signToken = id => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN
+  });
+}
+
 exports.register = async (req, res, next) => {
   try {
     const newUser = await User.create({
@@ -12,9 +18,7 @@ exports.register = async (req, res, next) => {
       confirmPassword: req.body.confirmPassword
     });
 
-    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXPIRES_IN
-    });
+    const token = signToken(newUser._id);
 
     res.status(201).json({
       status: "success",
@@ -25,10 +29,43 @@ exports.register = async (req, res, next) => {
     });
 
   } catch (err) {
-    console.error(err.message);
     res.status(400).json({
       status: "fail",
-      msg: err.message
+      err
+    });
+  }
+  next();
+}
+
+exports.login = async (req, res, next) => {
+
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({
+      status: "fail",
+      msg: 'Please provide an email and password!'
+    });
+  }
+
+  try {
+    const user = await User.findOne({ email }).select('+password');
+
+    if (!user || !user.correctPassword(password, user.password)) {
+      return res.status(401).json({ status: "fail", msg: 'Incorrect email or password!'});
+    }
+    
+    const token = signToken(user._id);
+
+    res.status(200).json({
+      status: "success",
+      token
+    });
+
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      err
     });
   }
   next();
