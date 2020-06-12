@@ -1,6 +1,6 @@
 const Post = require('../model/postModel');
 
-exports.getAllPosts = async (req, res, next) => {
+exports.getAllPosts = async (req, res) => {
   try {
     const posts = await Post.find();
     res.status(200).json({
@@ -14,12 +14,9 @@ exports.getAllPosts = async (req, res, next) => {
       msg: err.message
     });
   }
-
-  next();
 }
 
-exports.createPost = async (req, res, next) => {
-
+exports.createPost = async (req, res) => {
   const { title, description } = req.body;
 
   try {
@@ -40,6 +37,71 @@ exports.createPost = async (req, res, next) => {
       msg: err.message
     });
   }
+}
 
-  next();
+exports.getPost = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+
+    if (!post) {
+      return res.status(404).json({
+        status: 'fail',
+        msg: 'No document found with that ID'
+      });
+    } 
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        post: post
+      }
+    });  
+
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      msg: err.message
+    });
+  }
+}
+
+exports.updatePost = async (req, res) => {
+  try {
+    const post = await Post.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    });
+    res.status(200).json({
+      status: 'success',
+      post
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      msg: err.message
+    });
+  }
+}
+
+exports.deletePost = async (req, res) => {
+  try {
+    const post = await Post.findByIdAndDelete(req.params.id);
+
+    if (!post) {
+      return res.status(404).json({
+        status: 'fail',
+        msg: 'No document found with that ID'
+      });
+    } 
+
+    res.status(204).json({
+      status: 'success',
+      data: null
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      msg: err.message
+    });
+  }
 }

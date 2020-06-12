@@ -10,7 +10,7 @@ const signToken = id => {
   });
 }
 
-exports.register = async (req, res, next) => {
+exports.register = async (req, res) => {
   try {
     const newUser = await User.create({
       name: req.body.name,
@@ -36,10 +36,9 @@ exports.register = async (req, res, next) => {
       msg: err.message
     });
   }
-  next();
 }
 
-exports.login = async (req, res, next) => {
+exports.login = async (req, res) => {
 
   const { email, password } = req.body;
 
@@ -70,7 +69,6 @@ exports.login = async (req, res, next) => {
       msg: err.message
     });
   }
-  next();
 }
 
 exports.protect = async (req, res, next) => {

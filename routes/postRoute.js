@@ -8,4 +8,10 @@ router
   .get(postController.getAllPosts)
   .post(authController.protect, postController.createPost);
 
+  router
+  .route('/:id')
+  .get(postController.getPost)
+  .delete(authController.protect, postController.deletePost)
+  .put(authController.protect, postController.updatePost);
+
 module.exports = router;

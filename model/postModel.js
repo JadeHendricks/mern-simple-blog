@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-const User = require('../model/userModel');
 
 const postSchema = new mongoose.Schema({
   title: {
     type: String,
+    minlength: 10,
     required: [true, 'Please add a title!']
   },
   description: {
