@@ -21,7 +21,7 @@ exports.updateMe = async (req, res) => {
   const { email, password } = req.body;
 
   if (email || password) {
-    res.status(401).json({
+    return res.status(401).json({
       status: 'fail',
       msg: 'Email and Password cannot be changed on this route!'
     });
