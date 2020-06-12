@@ -5,6 +5,8 @@ const bcrypt = require('bcryptjs');
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
+    trim: true,
+    minlength: 2,
     required: [true, 'Please tell us your name!']
   },
   email: {
@@ -30,6 +32,15 @@ const userSchema = new mongoose.Schema({
       },
       message: 'Passwords are not the same!'
     }
+  },
+  role: {
+    type: String,
+    default: 'admin'
+  },
+  active: {
+    type: Boolean,
+    default: true,
+    select: false
   },
   passwordChangedAt: Date
 });
