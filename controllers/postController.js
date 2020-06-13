@@ -17,12 +17,13 @@ exports.getAllPosts = async (req, res) => {
 }
 
 exports.createPost = async (req, res) => {
-  const { title, description } = req.body;
+  const { title, description, user } = req.body;
 
   try {
     const newPost = await Post.create({
       title,
-      description
+      description,
+      user
     });
 
     res.status(200).json({
@@ -41,7 +42,7 @@ exports.createPost = async (req, res) => {
 
 exports.getPost = async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id).populate('user');
 
     if (!post) {
       return res.status(404).json({

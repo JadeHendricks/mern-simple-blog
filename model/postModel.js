@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
 
 const postSchema = new mongoose.Schema({
   title: {
@@ -15,7 +14,21 @@ const postSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: [true, 'A post must belong to a user']
   }
+},
+{
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
+});
+
+postSchema.pre(/^find/, function(next) {
+  this.populate({ path: 'user', select: 'name' });
+  next();
 });
 
 const Post = mongoose.model('Post', postSchema);
