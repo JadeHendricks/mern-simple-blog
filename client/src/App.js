@@ -6,11 +6,14 @@ import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
 import AddPost from './components/posts/PostForm';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
+import PostState from './context/post/PostState';
+
 import './App.css';
 
 const App = () => {
   return (
-    <Fragment>
+    <PostState>
       <Router>
         <Navbar />
         <Switch>
@@ -23,7 +26,7 @@ const App = () => {
         </div>
         </Switch>
       </Router>
-    </Fragment>
+    </PostState>
   );
 }
 

@@ -27,6 +27,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.18",
     "react-router-dom": "^5.2.0",
+    "uuid": "^8.1.0",
     "validator": "^13.1.0"
   },
   "devDependencies": {
