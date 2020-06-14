@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Navbar from './components/layouts/Navbar';
 import Home from './components/layouts/Home';
 import About from './components/user/About';
@@ -16,15 +16,14 @@ const App = () => {
     <PostState>
       <Router>
         <Navbar />
-        <Switch>
         <div className="container">
-          <Route path='/' exact component={Home} />
-          <Route path='/admin' exact component={Login} />
-          <Route path='/signup' exact component={Signup} />
-          <Route path='/about' exact component={About} />
-          <Route path='/addPost'exact component={AddPost} />
+          <Switch>
+            <Route path='/' exact component={ Home } />
+            <Route path='/admin' exact component={ Login } />
+            <Route path='/about' exact component={ About } />
+            <Route path='/addPost'exact component={ AddPost } />
+          </Switch>
         </div>
-        </Switch>
       </Router>
     </PostState>
   );

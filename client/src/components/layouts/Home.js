@@ -1,8 +1,13 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
 import PostCard from '../posts/PostCard';
 import PostMain from '../posts/PostMain';
+import PostContext from '../../context/post/postContext';
 
 const Home = () => {
+
+  const postContext = useContext(PostContext);
+  const { posts } = postContext;
+
   return (
     <Fragment>
     <section>
@@ -10,9 +15,8 @@ const Home = () => {
         <div className="row">
           <div className="col-12">
             <h1 className="mb-3">Latest Posts</h1>
-          </div>
-          <PostCard />
-          <PostCard />
+          </div>         
+          { posts.map(post => <PostCard key={post.id} post={post}/>).slice(1, 3) }
         </div>
       </div>
     </section>
@@ -20,9 +24,7 @@ const Home = () => {
       <div className="container mt-5">
         <div className="row">
           <div className="col-sm-12">
-            <PostMain />
-            <PostMain />
-            <PostMain />
+            { posts.map(post => <PostMain key={post.id} post={post}/>) }
           </div>
         </div>
       </div>
