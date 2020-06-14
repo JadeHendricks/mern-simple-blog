@@ -17,6 +17,7 @@ const Login = () => {
       console.log('Please fill in all fields');
     } else {
       console.log('Logged in');
+      console.log('user', user);
     }
   }
 

@@ -3,7 +3,7 @@ import Navbar from './components/layouts/Navbar';
 import Home from './components/layouts/Home';
 import About from './components/user/About';
 import Login from './components/auth/Login';
-import Signup from './components/auth/Signup';
+import Post from './components/posts/Post';
 import AddPost from './components/posts/PostForm';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
@@ -21,6 +21,7 @@ const App = () => {
             <Route path='/' exact component={ Home } />
             <Route path='/admin' exact component={ Login } />
             <Route path='/about' exact component={ About } />
+            <Route path='/post/:id'exact component={ Post } />
             <Route path='/addPost'exact component={ AddPost } />
           </Switch>
         </div>
