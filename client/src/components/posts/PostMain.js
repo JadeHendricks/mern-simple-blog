@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const PostMain = () => {
   return (
@@ -11,7 +12,7 @@ const PostMain = () => {
         corrupti eligendi ea facilis provident consectetur, voluptate ullam aspernatur amet pariatur 
         voluptas modi vel accusamus beatae? Vero eveniet unde commodi nam, dicta vel obcaecati pariatur.
       </p>
-      <a href="#" className="btn btn-primary">Go somewhere</a>
+      <Link to='/post/2' className="btn btn-primary">Go somewhere</Link>
     </div>
   </div>
   )

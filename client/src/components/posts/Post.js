@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Post = () => {
   return (
@@ -15,7 +16,8 @@ const Post = () => {
                   corrupti eligendi ea facilis provident consectetur, voluptate ullam aspernatur amet pariatur 
                   voluptas modi vel accusamus beatae? Vero eveniet unde commodi nam, dicta vel obcaecati pariatur.
                 </p>
-                <a href="#" class="btn btn-primary">Back</a>
+                <Link to='/' class="btn btn-primary">Back</Link>
+                <Link to='/' class="btn btn-secondary">Edit</Link>
               </div>
             </div>
           </div>

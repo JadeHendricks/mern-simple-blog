@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import PostCard from '../posts/PostCard';
 import PostMain from '../posts/PostMain';
-import PostForm from '../posts/PostForm';
 
 const Home = () => {
   return (
@@ -28,7 +27,6 @@ const Home = () => {
         </div>
       </div>
     </section>
-    <PostForm />
     </Fragment>
   )
 }
