@@ -1,11 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import PostContext from '../../context/post/postContext';
 
 const PostForm = () => {
+
+  const postContext = useContext(PostContext);
+  const { posts, addPost, updatePost, setCurrentPost, currentPost, clearCurrentPost } = postContext;
+
+  useEffect(() => {
+    if (currentPost) {
+      setPost(currentPost)
+    } else {
+      setPost({
+        title: '',
+        description: ''
+      });
+    }
+  }, [postContext, currentPost])
 
   const [post, setPost] = useState({
     title: '',
     description: ''
   });
+  
 
   const { title, description } = post;
 
@@ -14,30 +30,36 @@ const PostForm = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (!title || !description) {
-      console.log('Please enter a title and a description');
+    if (!currentPost) {
+      addPost(post);
+      clearCurrentPost();
     } else {
-      console.log('Post Added');
-      console.log('post', post);
+      updatePost(post)
     }
 
+    onClear();
+  }
+
+  const onClear = () => {
+    clearCurrentPost();
   }
 
   return (
     <section className="mt-5 mb-5">
       <div className="container">
         <div className="col-md-6 offset-md-3">
-            <h1 className="mt-5 mb-3 h1">Add Post</h1>
+            <h1 className="mt-5 mb-3 h1">{ currentPost ? 'Update Post' : 'Add Post' }</h1>
             <form onSubmit={ onSubmit }>
                 <div className="form-group">
                     <label htmlFor="title">Title</label>
-                    <input type="text" placeholder="Title goes here" className="form-control" id="title" name="title" onChange={ onChange } required/>
+                    <input type="text" placeholder="Title goes here" value={ title } className="form-control" id="title" name="title" onChange={ onChange } required/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="description">Description</label>
-                    <textarea className="form-control" id="description" placeholder="Description goes here" name="description" rows="3" onChange={ onChange } required></textarea>
+                    <textarea className="form-control" id="description" value={ description } placeholder="Description goes here" name="description" rows="3" onChange={ onChange } required></textarea>
                 </div>
-                <button type="submit" className="btn btn-primary">Add Post</button>
+                <button type="submit" className="btn btn-primary mr-3">{ currentPost ? 'Update Post' : 'Add Post' }</button>
+                <button onClick={ onClear } className="btn btn-danger">Clear</button>
             </form>
         </div>
       </div>
