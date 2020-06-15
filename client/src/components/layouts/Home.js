@@ -1,12 +1,20 @@
-import React, { Fragment, useContext } from 'react';
+import React, { Fragment, useContext, useEffect } from 'react';
 import PostCard from '../posts/PostCard';
 import PostMain from '../posts/PostMain';
 import PostContext from '../../context/post/postContext';
+import AuthContext from '../../context/auth/authContext';
 
 const Home = () => {
 
   const postContext = useContext(PostContext);
+  const authContext = useContext(AuthContext);
   const { posts } = postContext;
+  const { loadUser } = authContext;
+
+  useEffect(() => {
+    loadUser();
+    //eslint-disable-next-line
+  }, [])
 
   return (
     <Fragment>
