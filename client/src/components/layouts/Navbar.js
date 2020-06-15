@@ -13,7 +13,6 @@ const Navbar = () => {
     setAlert('Logging out!', 'success');
     setTimeout(() => {
       logout();
-      window.location = '/admin';
     }, 5000);
 
   }
