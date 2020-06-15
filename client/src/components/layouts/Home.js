@@ -6,7 +6,7 @@ import PostContext from '../../context/post/postContext';
 const Home = () => {
 
   const postContext = useContext(PostContext);
-  const { posts, currentPost } = postContext;
+  const { posts } = postContext;
 
   return (
     <Fragment>
