@@ -1,5 +1,5 @@
 import React, { Fragment, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import AuthContext from '../../context/auth/authContext';
 import AlertContext from '../../context/alert/alertContext';
 
@@ -21,7 +21,7 @@ const Navbar = () => {
   const loggedInLinks = (
     <Fragment>
       <li className="nav-item">
-        <Link className="nav-link" to='/addPost'>Add Post</Link>
+        <NavLink className="nav-link" exact activeClassName='active' to='/addPost'>Add Post</NavLink>
       </li>
       <li className="nav-item">
         <a className="nav-link" onClick={ onLogout }  href="#!">Logout</a>
@@ -39,15 +39,15 @@ const Navbar = () => {
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav mr-auto">
         { isAuthenticated ? <li className="nav-item">
-            <a className="nav-link" href="#!">Hello { user && user.name }</a>
+            <span className="text-info" >Hello { user && user.name }</span>
           </li> : '' }
         </ul>
         <ul className="navbar-nav ml-auto">
           <li className="nav-item">
-            <Link className="nav-link" to='/'>Blog</Link>
+            <NavLink className="nav-link" activeClassName='active' exact to='/'>Blog</NavLink>
           </li>
-          <li className="nav-item active">
-            <Link className="nav-link" to='/about'>About</Link>
+          <li className="nav-item">
+            <NavLink className="nav-link" activeClassName='active' to='/about'>About</NavLink>
           </li>
           { isAuthenticated ? loggedInLinks : '' }
         </ul>
