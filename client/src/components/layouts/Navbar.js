@@ -1,13 +1,21 @@
 import React, { Fragment, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import AuthContext from '../../context/auth/authContext';
+import AlertContext from '../../context/alert/alertContext';
 
 const Navbar = () => {
   const authContext = useContext(AuthContext);
+  const alertContext = useContext(AlertContext);
   const { isAuthenticated, logout, user } = authContext;
+  const { setAlert } = alertContext;
   
   const onLogout = () => {
-    logout();
+    setAlert('Logging out!', 'success');
+    setTimeout(() => {
+      logout();
+      window.location = '/admin';
+    }, 5000);
+
   }
 
   const loggedInLinks = (
