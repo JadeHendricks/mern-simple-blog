@@ -8,25 +8,28 @@ import AddPost from './components/posts/PostForm';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import PostState from './context/post/PostState';
+import AuthState from './context/auth/AuthState';
 
 import './App.css';
 
 const App = () => {
   return (
-    <PostState>
-      <Router>
-        <Navbar />
-        <div className="container">
-          <Switch>
-            <Route path='/' exact component={ Home } />
-            <Route path='/admin' exact component={ Login } />
-            <Route path='/about' exact component={ About } />
-            <Route path='/post/:id'exact component={ Post } />
-            <Route path='/addPost'exact component={ AddPost } />
-          </Switch>
-        </div>
-      </Router>
-    </PostState>
+    <AuthState>
+      <PostState>
+        <Router>
+          <Navbar />
+          <div className="container">
+            <Switch>
+              <Route path='/' exact component={ Home } />
+              <Route path='/admin' exact component={ Login } />
+              <Route path='/about' exact component={ About } />
+              <Route path='/post/:id'exact component={ Post } />
+              <Route path='/addPost'exact component={ AddPost } />
+            </Switch>
+          </div>
+        </Router>
+      </PostState>
+    </AuthState>
   );
 }
 
