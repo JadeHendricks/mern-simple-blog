@@ -1,14 +1,17 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useEffect, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import PostContext from '../../context/post/postContext';
 import AlertContext from '../../context/alert/alertContext';
+import AuthContext from '../../context/auth/authContext';
 
 const Post = ({ match, history }) => {
 
   const postContext = useContext(PostContext);
   const alertContext = useContext(AlertContext);
+  const authContext = useContext(AuthContext);
   const { deletePost, getPost, setCurrentPost, clearCurrentPost, post } = postContext;
   const { setAlert } = alertContext;
+  const { isAuthenticated } = authContext;
 
 
   useEffect(() => {
@@ -41,8 +44,8 @@ const Post = ({ match, history }) => {
                   { post && post.description }
                 </p>
                 <Link to='/' className="btn btn-secondary mr-3">Back</Link>
-                <button onClick={ onEdit } className="btn btn-primary mr-3">Edit</button>
-                <button onClick={ onDelete } className="btn btn-danger">Delete</button>
+                { isAuthenticated ? ( <Fragment><button onClick={ onEdit } className="btn btn-primary mr-3">Edit</button>
+                <button onClick={ onDelete } className="btn btn-danger">Delete</button></Fragment> ) : '' }
               </div>
             </div>
           </div>

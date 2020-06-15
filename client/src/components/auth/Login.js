@@ -7,7 +7,7 @@ const Login = (props) => {
   const alertContext = useContext(AlertContext);
   const authContext = useContext(AuthContext);
   
-  const { setAlert, alerts } = alertContext;
+  const { setAlert } = alertContext;
   const { login, error, clearErrors, isAuthenticated } = authContext;
 
   const [user, setUser] = useState({

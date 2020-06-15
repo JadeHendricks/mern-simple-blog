@@ -29,10 +29,12 @@ const Navbar = () => {
       </button>
     
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul className="navbar-nav ml-auto">
-          { isAuthenticated ? <li className="nav-item">
+        <ul className="navbar-nav mr-auto">
+        { isAuthenticated ? <li className="nav-item">
             <a className="nav-link" href="#!">Hello { user && user.name }</a>
           </li> : '' }
+        </ul>
+        <ul className="navbar-nav ml-auto">
           <li className="nav-item">
             <Link className="nav-link" to='/'>Blog</Link>
           </li>
