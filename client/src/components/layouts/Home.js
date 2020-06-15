@@ -8,11 +8,13 @@ const Home = () => {
 
   const postContext = useContext(PostContext);
   const authContext = useContext(AuthContext);
-  const { posts } = postContext;
+  const { posts, getPosts, clearCurrentPost } = postContext;
   const { loadUser } = authContext;
 
   useEffect(() => {
+    clearCurrentPost();
     loadUser();
+    getPosts();
     //eslint-disable-next-line
   }, [])
 
@@ -24,7 +26,7 @@ const Home = () => {
           <div className="col-12">
             <h1 className="mb-3">Latest Posts</h1>
           </div>         
-          { posts.map(post => <PostCard key={post.id} post={post}/>).slice(1, 3) }
+          { posts && posts.map(post => <PostCard key={post.id} post={post}/>).slice(Math.max(posts.length - 2, 0)) }
         </div>
       </div>
     </section>
@@ -32,7 +34,7 @@ const Home = () => {
       <div className="container mt-5">
         <div className="row">
           <div className="col-sm-12">
-            { posts.map(post => <PostMain key={post.id} post={post}/>) }
+            { posts ? posts.map(post => <PostMain key={post.id} post={post}/>) : (<h4>Please add a posts</h4>) }
           </div>
         </div>
       </div>

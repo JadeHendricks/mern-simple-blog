@@ -20,7 +20,7 @@ if (localStorage.token) {
   setAuthToken(localStorage.token);
 }
 
-const App = () => {
+const App = (props) => {
   return (
     <AuthState>
       <AlertState>
@@ -33,7 +33,7 @@ const App = () => {
                 <Route path='/' exact component={ Home } />
                 <Route path='/admin' exact component={ Login } />
                 <Route path='/about' exact component={ About } />
-                <Route path='/post/:id'exact component={ Post } />
+                <Route path='/post/:id'exact history={props.history} component={ Post } />
                 <PrivateRoute path='/addPost'exact component={ AddPost } />
               </Switch>
             </div>

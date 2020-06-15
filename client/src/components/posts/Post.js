@@ -1,22 +1,32 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PostContext from '../../context/post/postContext';
+import AlertContext from '../../context/alert/alertContext';
 
-const Post = ({ match }) => {
+const Post = ({ match, history }) => {
 
   const postContext = useContext(PostContext);
-  const { deletePost, setCurrentPost, clearCurrentPost, posts } = postContext;
+  const alertContext = useContext(AlertContext);
+  const { deletePost, getPost, setCurrentPost, clearCurrentPost, post } = postContext;
+  const { setAlert } = alertContext;
 
-  const [post, setPost] = useState([...posts]);
 
   useEffect(() => {
-    const currentPost = post.filter(post => Number(post.id) === Number(match.params.id));
-    setPost(currentPost);
+    getPost(match.params.id);
+    //eslint-disable-next-line
   }, [match.params.id])
 
   const onDelete = () => {
     deletePost(match.params.id);
     clearCurrentPost();
+    setAlert('Post has been deleted!', 'success');
+
+    setTimeout(() => history.push('/'), 5000);
+  }
+
+  const onEdit = () => {
+    setCurrentPost(post);
+    history.push('/addPost');
   }
   
   return (
@@ -26,12 +36,12 @@ const Post = ({ match }) => {
           <div className="col-sm-12">
             <div className="card">
               <div className="card-body">
-                <h5 className="card-title">{ post[0]?.title }</h5>
+                <h5 className="card-title">{ post && post.title }</h5>
                 <p className="card-text">
-                  { post[0]?.description }
+                  { post && post.description }
                 </p>
                 <Link to='/' className="btn btn-secondary mr-3">Back</Link>
-                <button onClick={ () => setCurrentPost(post[0]) } className="btn btn-primary mr-3">Edit</button>
+                <button onClick={ onEdit } className="btn btn-primary mr-3">Edit</button>
                 <button onClick={ onDelete } className="btn btn-danger">Delete</button>
               </div>
             </div>

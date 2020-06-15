@@ -46,7 +46,7 @@ const Login = (props) => {
           <form onSubmit={ onSubmit }>
               <div className="form-group">
                   <label htmlFor="email">Email address</label>
-                  <input type="email" placeholder="you@example.com" value={ email } className="form-control" id="email" name="email" onChange={ onChange }/>
+                  <input type="text" placeholder="you@example.com" value={ email } className="form-control" id="email" name="email" onChange={ onChange }/>
               </div>
               <div className="form-group">
                   <label htmlFor="password">Password</label>

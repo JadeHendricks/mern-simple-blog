@@ -9,7 +9,7 @@ const PostMain = ({ post }) => {
       <p className="card-text">
         { post.description }
       </p>
-      <Link to={`/post/${post.id}`} className="btn btn-primary">See more</Link>
+      <Link to={`/post/${post._id}`} className="btn btn-primary">See more</Link>
     </div>
   </div>
   )

@@ -1,7 +1,7 @@
-import React, { useReducer } from 'react';
-import {v4 as uuidv4} from "uuid";
+import React, { useReducer, useContext } from 'react';
 import AuthContext from './authContext';
 import authReducer from './authReducer';
+import AlertContext from '../alert/alertContext';
 import setAuthToken from '../../utils/setAuthToken';
 import axios from 'axios';
 
@@ -25,6 +25,8 @@ const AuthState = props => {
 
   const [state, dispatch] = useReducer(authReducer, initialState);
 
+  const alertContext = useContext(AlertContext);
+
   // Load user
   const loadUser = async () => {
     if (localStorage.token) {
@@ -44,6 +46,9 @@ const AuthState = props => {
   }
   // Login User
   const login = async formData => {
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
+    }
     const config = {
       headers: {'Content-Type': 'application/json'}
     }
@@ -56,12 +61,14 @@ const AuthState = props => {
         type: LOGIN_FAIL,
         payload: err.response.data.msg
       })
+
+      alertContext.setAlert(err.response.data.msg, 'danger');
     }
 
   }
   // Logout
   const logout = () => {
-    dispatch({ type: LOGOUT })
+    dispatch({ type: LOGOUT });
   }
   // Clear Errors
   const clearErrors = () => {

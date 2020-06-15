@@ -1,51 +1,116 @@
-import React, { useReducer } from 'react';
-import {v4 as uuidv4} from "uuid";
+import React, { useReducer, useContext } from 'react';
+import axios from 'axios';
+import AlertContext from '../alert/alertContext';
 import PostContext from './postContext';
 import contactReducer from './postReducer';
 import {
   ADD_POST,
   UPDATE_POST,
+  GET_POSTS,
+  GET_POST,
   DELETE_POST,
   SET_CURRENT,
-  CLEAR_CURRENT
+  CLEAR_CURRENT,
+  POST_ERROR
 } from '../types';
 
 const PostState = props => {
   const initialState = {
-    posts: [
-      {
-        id: 1,
-        title: 'The Great Gatsby',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer at ullamcorper urna, eu varius lectus. Phasellus lobortis purus nulla, molestie consectetur lorem laoreet sit amet.'
-      },
-      {
-        id: 2,
-        title: 'The Chiproll',
-        description: 'laoreet turpis maximus. Duis dictum massa a nulla tristique, ut sodales velit scelerisque. Maecenas et leo non felis rutrum blandit non ut enim. Pellentesque eu lacus sit amet nisi fringilla maximus eget sit amet risus.'
-      },
-      {
-        id: 3,
-        title: 'My trip to England',
-        description: 'Aenean a mauris at sem eleifend efficitur ac sed elit. In porttitor tempor lorem, vitae consectetur nisl molestie ac. Donec vitae eros sed massa iaculis cursus vitae eu urna. Aliquam vitae dictum erat. Praesent rutrum massa lectus, in tempor lorem scelerisque et.'
-      }
-    ],
-    currentPost: null
+    posts: null,
+    post: null,
+    currentPost: null,
+    error: null
   }
 
   const [state, dispatch] = useReducer(contactReducer, initialState);
+  const alertContext = useContext(AlertContext);
+  const { setAlert } = alertContext;
 
+  // Get posts
+  const getPosts = async () => {
+    try {
+      const res = await axios.get('/api/v1/posts');
+      dispatch({ 
+        type: GET_POSTS, 
+        payload: res.data.posts
+      });
+    } catch (err) {
+      dispatch({ 
+        type: POST_ERROR, 
+        payload: err.response.data.msg 
+      });
+    }
+  }
+    // Get posts
+    const getPost = async id => {
+      try {
+        const res = await axios.get(`/api/v1/posts/${id}`);
+        dispatch({ 
+          type: GET_POST, 
+          payload: res.data.data.post
+        });
+      } catch (err) {
+        dispatch({ 
+          type: POST_ERROR, 
+          payload: err.response.data.msg 
+        });
+      }
+    }
   // Add Post
-  const addPost = post => {
-    post.id = uuidv4();
-    dispatch({ type: ADD_POST, payload: post });
+  const addPost = async post => {
+    const config = {
+      headers: {'Content-Type': 'application/json'}
+    };
+
+    try {
+      const res = await axios.post('/api/v1/posts', post, config);
+      dispatch({ 
+        type: ADD_POST, 
+        payload: res.data 
+      });
+    } catch (err) {
+      dispatch({ 
+        type: POST_ERROR, 
+        payload: err.response.data.msg 
+      });
+      setAlert(err.response.data.msg, 'danger');
+    }
   }
   // Update Post
-  const updatePost = post => {
-    dispatch({ type: UPDATE_POST, payload: post });
+  const updatePost = async post => {
+    const config = {
+      headers: {'Content-Type': 'application/json'}
+    };
+
+    try {
+      const res = await axios.put(`/api/v1/posts/${post._id}`, post, config);
+      dispatch({ 
+        type: UPDATE_POST, 
+        payload: res.data.post 
+      });
+    } catch (err) {
+      dispatch({ 
+        type: POST_ERROR, 
+        payload: err.response.data.msg 
+      });
+    }
   }
   // Delete Post
-  const deletePost = id => {
-    dispatch({ type: DELETE_POST, payload: id });
+  const deletePost = async id => {
+
+    try {
+      await axios.delete(`/api/v1/posts/${id}`);
+      dispatch({ 
+        type: DELETE_POST, 
+        payload: id 
+      });
+    } catch (err) {
+      dispatch({ 
+        type: POST_ERROR, 
+        payload: err.response.data.msg 
+      });
+    }
+
   }
   // Set Current Post
   const setCurrentPost = post => {
@@ -58,13 +123,17 @@ const PostState = props => {
 
   return (
     <PostContext.Provider value={{
+      post: state.post,
       posts: state.posts,
       currentPost: state.currentPost,
+      error: state.error,
       addPost,
       deletePost,
       updatePost,
       setCurrentPost,
-      clearCurrentPost
+      clearCurrentPost,
+      getPosts,
+      getPost
     }}>
       { props.children }
     </PostContext.Provider>

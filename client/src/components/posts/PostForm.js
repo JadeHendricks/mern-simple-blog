@@ -1,10 +1,18 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { Link  } from 'react-router-dom';
 import PostContext from '../../context/post/postContext';
+import AuthContext from '../../context/auth/authContext';
+import AlertContext from '../../context/alert/alertContext';
 
-const PostForm = () => {
+const PostForm = (props) => {
 
   const postContext = useContext(PostContext);
-  const { posts, addPost, updatePost, setCurrentPost, currentPost, clearCurrentPost } = postContext;
+  const authContext = useContext(AuthContext);
+  const alertContext = useContext(AlertContext);
+
+  const { addPost, updatePost, currentPost, clearCurrentPost } = postContext;  
+  const { user } = authContext;
+  const { setAlert } = alertContext;
 
   useEffect(() => {
     if (currentPost) {
@@ -30,14 +38,17 @@ const PostForm = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (!currentPost) {
-      addPost(post);
-      clearCurrentPost();
+    if (currentPost === null) {
+      addPost({...post, user: user._id});
+      setAlert('Post has been added!', 'success');
     } else {
-      updatePost(post)
+      updatePost(post);
+      setAlert('Post has been updated!', 'success');
     }
 
     onClear();
+    setTimeout(() => props.history.push('/'), 5000);
+
   }
 
   const onClear = () => {
@@ -58,6 +69,7 @@ const PostForm = () => {
                     <label htmlFor="description">Description</label>
                     <textarea className="form-control" id="description" value={ description } placeholder="Description goes here" name="description" rows="3" onChange={ onChange } required></textarea>
                 </div>
+                <Link to='/' className="btn btn-secondary mr-3">Back</Link>
                 <button type="submit" className="btn btn-primary mr-3">{ currentPost ? 'Update Post' : 'Add Post' }</button>
                 <button onClick={ onClear } className="btn btn-danger">Clear</button>
             </form>
